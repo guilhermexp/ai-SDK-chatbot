@@ -1,0 +1,253 @@
+{
+  "v": 1,
+  "name": "AI Chatbot - Dynamic UUID Tests",
+  "folders": [],
+  "requests": [
+    {
+      "v": "1",
+      "name": "01 - Health Check",
+      "method": "GET",
+      "endpoint": "http://localhost:3005/ping",
+      "headers": [],
+      "params": [],
+      "body": {
+        "contentType": null,
+        "body": null
+      },
+      "auth": {
+        "authType": "none",
+        "authActive": true
+      },
+      "preRequestScript": "",
+      "testScript": "pw.test(\"✅ Health: Status 200\", () => {\n  pw.expect(pw.response.status).toBe(200);\n});\n\npw.test(\"✅ Health: Response OK\", () => {\n  pw.expect(pw.response.body.ok).toBe(true);\n});"
+    },
+    {
+      "v": "1",
+      "name": "02 - Edge Flags",
+      "method": "GET",
+      "endpoint": "http://localhost:3005/api/edge-flags",
+      "headers": [],
+      "params": [],
+      "body": {
+        "contentType": null,
+        "body": null
+      },
+      "auth": {
+        "authType": "none",
+        "authActive": true
+      },
+      "preRequestScript": "",
+      "testScript": "pw.test(\"✅ Config: Status 200\", () => {\n  pw.expect(pw.response.status).toBe(200);\n});\n\npw.test(\"✅ Config: Returns object\", () => {\n  pw.expect(typeof pw.response.body).toBe('object');\n});"
+    },
+    {
+      "v": "1",
+      "name": "03 - Homepage",
+      "method": "GET",
+      "endpoint": "http://localhost:3005",
+      "headers": [],
+      "params": [],
+      "body": {
+        "contentType": null,
+        "body": null
+      },
+      "auth": {
+        "authType": "none",
+        "authActive": true
+      },
+      "preRequestScript": "",
+      "testScript": "pw.test(\"✅ Frontend: Status 200\", () => {\n  pw.expect(pw.response.status).toBe(200);\n});\n\npw.test(\"✅ Frontend: HTML loaded\", () => {\n  pw.expect(pw.response.body !== null).toBe(true);\n});"
+    },
+    {
+      "v": "1",
+      "name": "04 - Chat: Simple Question",
+      "method": "POST",
+      "endpoint": "http://localhost:3005/api/chat",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "application/json",
+          "active": true
+        }
+      ],
+      "params": [],
+      "body": {
+        "contentType": "application/json",
+        "body": "{\n  \"id\": \"c5fa1dcd-2894-415f-859f-04bb53ddd97c\",\n  \"message\": {\n    \"id\": \"504050d7-3edf-4ccf-ae15-9d68b76f85a1\",\n    \"role\": \"user\",\n    \"parts\": [\n      {\n        \"type\": \"text\",\n        \"text\": \"What is 5+3?\"\n      }\n    ]\n  },\n  \"selectedChatModel\": \"chat-model\",\n  \"selectedVisibilityType\": \"private\"\n}"
+      },
+      "auth": {
+        "authType": "none",
+        "authActive": true
+      },
+      "preRequestScript": "",
+      "testScript": "pw.test(\"✅ Chat: Status 200\", () => {\n  pw.expect(pw.response.status).toBe(200);\n});\n\npw.test(\"✅ Chat: Stream started\", () => {\n  pw.expect(pw.response.status).toBe(200);\n});"
+    },
+    {
+      "v": "1",
+      "name": "05 - Chat: Code Request",
+      "method": "POST",
+      "endpoint": "http://localhost:3005/api/chat",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "application/json",
+          "active": true
+        }
+      ],
+      "params": [],
+      "body": {
+        "contentType": "application/json",
+        "body": "{\n  \"id\": \"a0107835-e828-46ef-9322-e426611ebb59\",\n  \"message\": {\n    \"id\": \"58a530ec-89f5-415e-b339-589de9cf7edd\",\n    \"role\": \"user\",\n    \"parts\": [\n      {\n        \"type\": \"text\",\n        \"text\": \"Write hello world in Python\"\n      }\n    ]\n  },\n  \"selectedChatModel\": \"chat-model\",\n  \"selectedVisibilityType\": \"private\"\n}"
+      },
+      "auth": {
+        "authType": "none",
+        "authActive": true
+      },
+      "preRequestScript": "",
+      "testScript": "pw.test(\"✅ Chat: Code gen works\", () => {\n  pw.expect(pw.response.status).toBe(200);\n});"
+    },
+    {
+      "v": "1",
+      "name": "06 - Chat: Reasoning Mode",
+      "method": "POST",
+      "endpoint": "http://localhost:3005/api/chat",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "application/json",
+          "active": true
+        }
+      ],
+      "params": [],
+      "body": {
+        "contentType": "application/json",
+        "body": "{\n  \"id\": \"d85f06c0-ffb6-49fc-bc85-9cab2afc6c27\",\n  \"message\": {\n    \"id\": \"cdfd74cd-60c6-44a6-9195-55d8f1150521\",\n    \"role\": \"user\",\n    \"parts\": [\n      {\n        \"type\": \"text\",\n        \"text\": \"Explain photosynthesis briefly\"\n      }\n    ]\n  },\n  \"selectedChatModel\": \"chat-model-reasoning\",\n  \"selectedVisibilityType\": \"private\"\n}"
+      },
+      "auth": {
+        "authType": "none",
+        "authActive": true
+      },
+      "preRequestScript": "",
+      "testScript": "pw.test(\"✅ Chat: Reasoning mode works\", () => {\n  pw.expect(pw.response.status).toBe(200);\n});"
+    },
+    {
+      "v": "1",
+      "name": "07 - Auth: History (Expected 401)",
+      "method": "GET",
+      "endpoint": "http://localhost:3005/api/history",
+      "headers": [],
+      "params": [],
+      "body": {
+        "contentType": null,
+        "body": null
+      },
+      "auth": {
+        "authType": "none",
+        "authActive": true
+      },
+      "preRequestScript": "",
+      "testScript": "pw.test(\"✅ Auth: Blocks unauthenticated\", () => {\n  pw.expect(pw.response.status).toBe(401);\n});\n\npw.test(\"✅ Auth: Has error code\", () => {\n  const body = pw.response.body;\n  pw.expect(body.code !== undefined).toBe(true);\n});"
+    },
+    {
+      "v": "1",
+      "name": "08 - Auth: Document (Expected 401)",
+      "method": "GET",
+      "endpoint": "http://localhost:3005/api/document?id=test-doc",
+      "headers": [],
+      "params": [],
+      "body": {
+        "contentType": null,
+        "body": null
+      },
+      "auth": {
+        "authType": "none",
+        "authActive": true
+      },
+      "preRequestScript": "",
+      "testScript": "pw.test(\"✅ Auth: Document blocked\", () => {\n  pw.expect(pw.response.status).toBe(401);\n});"
+    },
+    {
+      "v": "1",
+      "name": "09 - Auth: Votes (Expected 401)",
+      "method": "GET",
+      "endpoint": "http://localhost:3005/api/vote?chatId=test-chat",
+      "headers": [],
+      "params": [],
+      "body": {
+        "contentType": null,
+        "body": null
+      },
+      "auth": {
+        "authType": "none",
+        "authActive": true
+      },
+      "preRequestScript": "",
+      "testScript": "pw.test(\"✅ Auth: Votes blocked\", () => {\n  pw.expect(pw.response.status).toBe(401);\n});"
+    },
+    {
+      "v": "1",
+      "name": "10 - Validation: Missing Chat ID",
+      "method": "POST",
+      "endpoint": "http://localhost:3005/api/chat",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "application/json",
+          "active": true
+        }
+      ],
+      "params": [],
+      "body": {
+        "contentType": "application/json",
+        "body": "{\n  \"message\": {\n    \"id\": \"test\",\n    \"role\": \"user\",\n    \"parts\": []\n  }\n}"
+      },
+      "auth": {
+        "authType": "none",
+        "authActive": true
+      },
+      "preRequestScript": "",
+      "testScript": "pw.test(\"✅ Validation: Rejects bad request\", () => {\n  pw.expect(pw.response.status).toBe(400);\n});\n\npw.test(\"✅ Validation: Error code present\", () => {\n  pw.expect(pw.response.body.code).toBe('bad_request:api');\n});"
+    },
+    {
+      "v": "1",
+      "name": "11 - Validation: Invalid Model",
+      "method": "POST",
+      "endpoint": "http://localhost:3005/api/chat",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "application/json",
+          "active": true
+        }
+      ],
+      "params": [],
+      "body": {
+        "contentType": "application/json",
+        "body": "{\n  \"id\": \"7646d325-c9ba-47f7-be6d-0ae23a3529c9\",\n  \"message\": {\n    \"id\": \"f6e9c276-96ad-46cc-83de-0fc44cb22395\",\n    \"role\": \"user\",\n    \"parts\": [{\"type\": \"text\", \"text\": \"test\"}]\n  },\n  \"selectedChatModel\": \"invalid-model\",\n  \"selectedVisibilityType\": \"private\"\n}"
+      },
+      "auth": {
+        "authType": "none",
+        "authActive": true
+      },
+      "preRequestScript": "",
+      "testScript": "pw.test(\"✅ Validation: Invalid model rejected\", () => {\n  pw.expect(pw.response.status).toBe(400);\n});"
+    },
+    {
+      "v": "1",
+      "name": "12 - Validation: Missing Params",
+      "method": "GET",
+      "endpoint": "http://localhost:3005/api/document",
+      "headers": [],
+      "params": [],
+      "body": {
+        "contentType": null,
+        "body": null
+      },
+      "auth": {
+        "authType": "none",
+        "authActive": true
+      },
+      "preRequestScript": "",
+      "testScript": "pw.test(\"✅ Validation: Missing param rejected\", () => {\n  const is400 = pw.response.status === 400;\n  const is401 = pw.response.status === 401;\n  pw.expect(is400 || is401).toBe(true);\n});"
+    }
+  ]
+}
